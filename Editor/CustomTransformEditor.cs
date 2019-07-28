@@ -5,19 +5,20 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
-namespace TP.Tools
+namespace KoreInspector
 {
     // Original Author: Cobo3, https://forum.unity.com/threads/extending-instead-of-replacing-built-in-inspectors.407612/
     // Edited by Sichen Liu
     [CustomEditor(typeof(Transform), true), CanEditMultipleObjects]
-    public class CustomTransformInspector : Editor
+    public class CustomTransformInspector : KoreInspectorBase
     {
         Editor m_DefaultEditor;
         Transform m_Transform;
         Vector3 m_LocalPosition, m_LocalEulerAngles, m_LocalScale;
 
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             //When this inspector is created, also create the built-in inspector
             m_DefaultEditor = Editor.CreateEditor(targets, Type.GetType("UnityEditor.TransformInspector, UnityEditor"));
             m_Transform = target as Transform;
@@ -26,21 +27,15 @@ namespace TP.Tools
             m_LocalScale = m_Transform.localScale;
         }
 
-        void OnDisable()
+        protected override void OnDefaultInspectorGUI()
         {
-            //When OnDisable is called, the default editor we created should be destroyed to avoid memory leakage.
-            //Also, make sure to call any required methods like OnDisable
-            MethodInfo disableMethod = m_DefaultEditor.GetType().GetMethod("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (disableMethod != null)
-                disableMethod.Invoke(m_DefaultEditor, null);
-            DestroyImmediate(m_DefaultEditor);
+            DefaultTransformInspector();
         }
 
-        public override void OnInspectorGUI()
+        protected override void OnOverrideInspectorGUI()
         {
             EditorGUILayout.LabelField("Local Space", EditorStyles.boldLabel);
             DefaultTransformInspector();
-            // m_defaultEditor.OnInspectorGUI();
 
             //Show World Space Transform
             EditorGUILayout.Space();
@@ -61,6 +56,16 @@ namespace TP.Tools
             m_Transform.localRotation = localRotation;
             m_Transform.localScale = localScale;
             GUI.enabled = true;
+        }
+
+        void OnDisable()
+        {
+            //When OnDisable is called, the default editor we created should be destroyed to avoid memory leakage.
+            //Also, make sure to call any required methods like OnDisable
+            MethodInfo disableMethod = m_DefaultEditor.GetType().GetMethod("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            if (disableMethod != null)
+                disableMethod.Invoke(m_DefaultEditor, null);
+            DestroyImmediate(m_DefaultEditor);
         }
 
         private void DefaultTransformInspector()
@@ -84,7 +89,7 @@ namespace TP.Tools
             EditorGUI.BeginChangeCheck();
 
             m_LocalPosition = EditorGUILayout.Vector3Field("Position", m_Transform.localPosition);
-            if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Refresh"),
+            if (GUILayout.Button(EditorGUIUtility.IconContent("RotateTool"),
                                                                     GUILayout.Width(EditorGUIUtility.singleLineHeight * 1.5f), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
             {
                 m_LocalPosition = Vector3.zero;
@@ -102,7 +107,7 @@ namespace TP.Tools
             m_LocalEulerAngles = EditorGUILayout.Vector3Field("Rotation", m_Transform.localEulerAngles);
             if (EditorGUI.EndChangeCheck())
                 didRotationChange = true;
-            if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Refresh"),
+            if (GUILayout.Button(EditorGUIUtility.IconContent("RotateTool"),
                                 GUILayout.Width(EditorGUIUtility.singleLineHeight * 1.5f), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
             {
                 m_LocalEulerAngles = Vector3.zero;
@@ -115,11 +120,11 @@ namespace TP.Tools
             m_LocalScale = EditorGUILayout.Vector3Field("Scale", m_Transform.localScale);
             if (EditorGUI.EndChangeCheck())
                 didScaleChange = true;
-            if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Refresh"),
+            if (GUILayout.Button(EditorGUIUtility.IconContent("RotateTool"),
                             GUILayout.Width(EditorGUIUtility.singleLineHeight * 1.5f), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
             {
                 m_LocalScale = Vector3.one;
-                didRotationChange = true;
+                didScaleChange = true;
             }
             EditorGUILayout.EndHorizontal();
 
@@ -136,7 +141,7 @@ namespace TP.Tools
 
                 if (didScaleChange)
                     m_Transform.localScale = m_LocalScale;
-
+                this.Repaint();
             }
 
             // Since BeginChangeCheck only works on the selected object
