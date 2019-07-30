@@ -28,6 +28,9 @@ namespace KoreInspector
         public delegate void OnInspectorOverrideChanged();
         public static OnInspectorOverrideChanged onInspectorOverrideChanged;
 
+        /// <summary>
+        /// Find all types of kore inspectors from assembly
+        /// </summary>
         private static void FindAllKoreInspectors()
         {
             Type koreInspectorType = typeof(KoreInspectorBase);
@@ -67,7 +70,7 @@ namespace KoreInspector
             for (int i = 0; i < s_KoreInspectorSubTypes.Count; i++)
             {
                 EditorGUI.BeginChangeCheck();
-                s_InpsectorOverrides[i] = EditorGUILayout.Toggle(ToTitleCase(s_KoreInspectorSubTypes[i].Name), s_InpsectorOverrides[i]);
+                s_InpsectorOverrides[i] = EditorGUILayout.ToggleLeft(ToTitleCase(s_KoreInspectorSubTypes[i].Name), s_InpsectorOverrides[i]);
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(this, "Changed override");

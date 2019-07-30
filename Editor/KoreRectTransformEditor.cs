@@ -5,8 +5,11 @@ using System;
 
 namespace KoreInspector
 {
+	/// <summary>
+	/// Currently this is the same as the default editor (￣y▽,￣)╭ 
+	/// </summary>
 	[CustomEditor(typeof(RectTransform), true)] 
-	public class CustomRectTransformEditor : KoreInspectorBase
+	public class KoreRectTransformEditor : KoreInspectorBase
 	{
 		private Editor m_EditorInstance;
 		private RectTransform m_RectTransform;
@@ -29,15 +32,6 @@ namespace KoreInspector
 		protected override void OnOverrideInspectorGUI()
 		{
 			m_EditorInstance.OnInspectorGUI();
-			DisplayRectSize();
-		}
-
-		private void DisplayRectSize()
-		{
-			m_rectSize = m_RectTransform.rect.size;
-			EditorGUI.BeginDisabledGroup(true);
-			EditorGUILayout.Vector2Field("Size", m_rectSize);
-			EditorGUI.EndDisabledGroup();
 		}
 	}
 

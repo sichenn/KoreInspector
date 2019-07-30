@@ -51,6 +51,7 @@ namespace KoreInspector
             {
                 overrideDefault = EditorPrefs.GetBool(KoreInspectorSettings.GetPrefsKey(this.GetType()));
             }
+            this.Repaint();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace UnityEditor
     // Original Author: Cobo3, https://forum.unity.com/threads/extending-instead-of-replacing-built-in-inspectors.407612/
     // Edited by Sichen Liu
     [CustomEditor(typeof(Transform), true), CanEditMultipleObjects]
-    public class CustomTransformInspector : KoreInspectorBase
+    public class KoreTransformEditor : KoreInspectorBase
     {
         Editor m_DefaultEditor;
         Transform m_Transform;
@@ -19,7 +19,7 @@ namespace UnityEditor
         protected override void OnEnable()
         {
             base.OnEnable();
-            //When this inspector is created, also create the built-in inspector
+            // When this inspector is created, also create the built-in inspector
             m_DefaultEditor = Editor.CreateEditor(targets, Type.GetType("UnityEditor.TransformInspector, UnityEditor"));
             m_Transform = target as Transform;
         }
