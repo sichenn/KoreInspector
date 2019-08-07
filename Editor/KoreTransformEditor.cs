@@ -68,8 +68,9 @@ namespace UnityEditor
             GUI.enabled = true;
         }
 
-        void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             //When OnDisable is called, the default editor we created should be destroyed to avoid memory leakage.
             //Also, make sure to call any required methods like OnDisable
             MethodInfo disableMethod = m_DefaultEditor.GetType().GetMethod("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
