@@ -9,7 +9,7 @@ e.g. `git submodule add git@github.com:sichenn/KoreInspector.git Assets/Plugins/
 Or
 
 #### [Unity Git Package](https://neogeek.dev/creating-custom-packages-for-unity-2018.3/)
-Add `"com.sichenn.koreeditor": "https://github.com/sichenn/KoreInspector.git"` to `Packages/manifest.json`
+Add `"com.sichenn.koreinspector": "https://github.com/sichenn/KoreInspector.git` to `Packages/manifest.json`
 
 ### Features
 

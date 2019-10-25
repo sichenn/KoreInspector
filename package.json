@@ -1,7 +1,7 @@
 {
-    "name": "com.sichenn.koreeditor",
-    "displayName": "Kore Editor",
-    "description": "Extended editors (Transform, RectTransform, etc.) with detailed fields and easy-to-use buttons",
+    "name": "com.sichenn.koreinspector",
+    "displayName": "Kore Inspector",
+    "description": "Extended inspectors (Transform, RectTransform, etc.) with detailed fields and easy-to-use buttons",
     "version": "1.0.0",
     "category": "Editor"
 }
